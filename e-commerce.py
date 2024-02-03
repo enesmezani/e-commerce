@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-file_path = 'C:\\Users\\Perdorues\\Downloads\\ecommerce_data.csv'
+file_path = 'ecommerce_data.csv'
 
 df = pd.read_csv(file_path)
 
