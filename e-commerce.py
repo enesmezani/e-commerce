@@ -49,10 +49,10 @@ def handle_missing_data(df):
 
 def create_derived_column(df):
    
-    df['Total_Price'] = df['Quantity'] * df['Price']
+    df['OrderPrice'] = df['Quantity'] * df['Price']
 
     print("\nCreating a New Derived Column:")
-    print(df[['Quantity', 'Price', 'Total_Price']].head())
+    print(df[['Quantity', 'Price', 'OrderPrice']].head())
     
     df['OrderDate'] = pd.to_datetime(df['OrderDate'])
     df['Year'] = df['OrderDate'].dt.year
@@ -80,61 +80,44 @@ def detailed_data_analysis(df):
     # #Number of Orders per Payment Method 
     # df['PaymentMethod'].value_counts().plot(kind='bar')
     # plt.show()
+    # Number of Orders per Category
     # df['Category'].value_counts().plot(kind='bar')
     # plt.show()
 
     # df['OrderDate'] = pd.to_datetime(df['OrderDate'])
     # df.set_index('OrderDate', inplace=True)
-    # df.resample('ME')['Total_Price'].sum().plot()
+    # trend_data = df['OrderPrice'].resample('ME').sum()
+    # trend_data.plot(title='Monthly Order Price Trend Analysis')
     # plt.show()
 
     # df['OrderDate'] = pd.to_datetime(df['OrderDate'])  # Convert OrderDate to datetime
     # df.set_index('OrderDate', inplace=True)
     # trend_data = df['Quantity'].resample('ME').sum()  # Resample by month and sum quantity
-    # trend_data.plot(title='Monthly Trend Analysis')
+    # trend_data.plot(title='Monthly Quantity Trend Analysis')
     # plt.show()
 
 
     #Top spending customers
-    # top_customers = df.groupby('UserID')['Total_Price'].sum().sort_values(ascending=False)
+    # top_customers = df.groupby('UserID')['OrderPrice'].sum().sort_values(ascending=False)
     # print(top_customers.head())
-    # #Top selling products
+    # # #Top selling products
     # top_products = df.groupby('ProductID')['Quantity'].sum().sort_values(ascending=False)
     # print(top_products.head())
-    # #Top selling categories
+    # # #Top selling categories
     # top_categories = df.groupby('Category')['Quantity'].sum().sort_values(ascending=False)
     # print(top_categories.head())
 
     # #Correlation between Price and Quantity
-    # correlation = df[['Price', 'Quantity']].corr()
+    # correlation = df[['OrderPrice', 'Quantity']].corr()
     # print(correlation)
-
-
-    # # Analysis of the 'Category' column
-    # column_to_analyze = 'Category'
-    # print(f"\nAnalysis of {column_to_analyze}:")
-    # print(df[column_to_analyze].value_counts())
 
     # # Investigate correlations between numerical variables
     # numerical_columns = df.select_dtypes(include='number').columns
     # correlation_matrix = df[numerical_columns].corr()
-    # print("\nCorrelation Matrix:")
-    # print(correlation_matrix)
-
-    # # Visualize correlation matrix using a heatmap
     # plt.figure(figsize=(10, 8))
     # sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f', linewidths=.5)
     # plt.title('Correlation Matrix')
     # plt.show()
-
-    # # Pairplot for numerical columns
-    # sns.pairplot(df[numerical_columns])
-    # plt.show()
-
-    # X = df['Price']
-    # y = df['Quantity']
-    # model = sm.OLS(y, sm.add_constant(X)).fit()
-    # print(model.summary())
 
     # # Data Visualization
     # # Distribution plot for numerical columns
@@ -147,22 +130,15 @@ def detailed_data_analysis(df):
     # df.set_index('OrderDate', inplace=True)
 
     #Total sales based on day over time
-    # df.resample('D')['Total_Price'].sum().plot()
-    # plt.title('Total Sales Over Time')
-    # plt.xlabel('Order Date')
-    # plt.ylabel('Sales')
-    # plt.show()
-
-    #Quantity of sales based on month over time
-    # df.resample('ME')['Quantity'].sum().plot()
-    # plt.title('Quantity Of Product Sales Over Time')
+    # df.resample('D')['OrderPrice'].sum().plot()
+    # plt.title('Daily Sales Analysis')
     # plt.xlabel('Order Date')
     # plt.ylabel('Sales')
     # plt.show()
 
     #Average price based on month over time
     # df.resample('ME')['Price'].mean().plot()
-    # plt.title('Average Price Over Time')
+    # plt.title('Average Price of Product Over Time')
     # plt.xlabel('Order Date')
     # plt.ylabel('Average Price')
     # plt.show()
@@ -177,9 +153,9 @@ def detailed_data_analysis(df):
     #Pie charts 
 
     #Sales by category
-    # category_sales = df.groupby('Category')['Total_Price'].sum()
+    # category_sales = df.groupby('Category')['OrderPrice'].sum()
     # plt.pie(category_sales, labels = category_sales.index, autopct='%1.1f%%')
-    # plt.title('Sales by Category')
+    # plt.title('Revenue by Category')
     # plt.show()
 
     #Orders by Payment Method
@@ -191,7 +167,7 @@ def detailed_data_analysis(df):
     #Quantiy Sold by Category 
     # product_sales = df.groupby('Category')['Quantity'].sum()
     # plt.pie(product_sales, labels = product_sales.index, autopct='%1.1f%%')
-    # plt.title('Quantity Sold by Category')
+    # plt.title('Quantity of Products by Category')
     # plt.show()
 
     #Sales Heatmap by Month and Category
@@ -201,25 +177,13 @@ def detailed_data_analysis(df):
     # plt.title('Sales Heatmap by Month and Category')
     # plt.show()
 
+    # Scatter
+
     #Price vs Quantity Sold
     # plt.scatter(df['Price'], df['Quantity'])
     # plt.title('Price vs Quantity Sold')
     # plt.xlabel('Price')
     # plt.ylabel('Quantity Sold')
-    # plt.show()
-
-    #Price vs Total Sales
-    # plt.scatter(df['Price'], df['Total_Price'])
-    # plt.title('Price vs Total Sales')
-    # plt.xlabel('Price')
-    # plt.ylabel('Total Sales')
-    # plt.show()
-
-    #Quantity vs Total Sales
-    # plt.scatter(df['Quantity'], df['Total_Price'])
-    # plt.title('Quantity Sold vs Total Sales')
-    # plt.xlabel('Quantity Sold')
-    # plt.ylabel('Total Sales')
     # plt.show()
     
     #Product Price Distribution
@@ -237,7 +201,7 @@ def detailed_data_analysis(df):
     # plt.show()
 
     #Total Sales Distribution
-    # plt.hist(df['Total_Price'], bins=10, edgecolor='black')
+    # plt.hist(df['OrderPrice'], bins=10, edgecolor='black')
     # plt.title('Total Sales Distribution')
     # plt.xlabel('Total Sales')
     # plt.ylabel('Frequency')
@@ -256,10 +220,10 @@ def main():
 
     # Data cleaning and manipulation
     # df = handle_missing_data(df)
-    df = create_derived_column(df)
+    # df = create_derived_column(df)
 
     # Detailed data analysis
-    df = detailed_data_analysis(df)
+    # df = detailed_data_analysis(df)
 
 if __name__ == "__main__":
     main()
